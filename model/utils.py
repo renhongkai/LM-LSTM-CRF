@@ -651,15 +651,15 @@ def iob_to_spans(sequence, lut, strict_iob2=False):
     for i, y in enumerate(sequence):
         label = lut[y]
 
-        if label.startswith('B-'):
+        if label.startswith('B'):
             if current is not None:
                 chunks.append('@'.join(current))
-            current = [label.replace('B-', ''), '%d' % i]
+            current = [label.replace('B', ''), '%d' % i]
 
-        elif label.startswith('I-'):
+        elif label.startswith('I'):
 
             if current is not None:
-                base = label.replace('I-', '')
+                base = label.replace('I', '')
                 if base == current[0]:
                     current.append('%d' % i)
                 else:
@@ -671,7 +671,7 @@ def iob_to_spans(sequence, lut, strict_iob2=False):
                     current = [base, '%d' % i]
 
             else:
-                current = [label.replace('I-', ''), '%d' % i]
+                current = [label.replace('I', ''), '%d' % i]
                 if iobtype == 2:
                     print('Warning, unexpected format (I before B @ %d) %s' % (i, label))
         else:
@@ -696,11 +696,11 @@ def iobes_to_spans(sequence, lut, strict_iob2=False):
     for i, y in enumerate(sequence):
         label = lut[y]
 
-        if label.startswith('B-'):
+        if label.startswith('B'):
 
             if current is not None:
                 chunks.append('@'.join(current))
-            current = [label.replace('B-', ''), '%d' % i]
+            current = [label.replace('B', ''), '%d' % i]
 
         if label.startswith('S-'):
 
@@ -710,10 +710,10 @@ def iobes_to_spans(sequence, lut, strict_iob2=False):
             base = label.replace('S-', '')
             chunks.append('@'.join([base, '%d' % i]))
 
-        elif label.startswith('I-'):
+        elif label.startswith('I'):
 
             if current is not None:
-                base = label.replace('I-', '')
+                base = label.replace('I', '')
                 if base == current[0]:
                     current.append('%d' % i)
                 else:
@@ -723,7 +723,7 @@ def iobes_to_spans(sequence, lut, strict_iob2=False):
                     current = [base, '%d' % i]
 
             else:
-                current = [label.replace('I-', ''), '%d' % i]
+                current = [label.replace('I', ''), '%d' % i]
                 if iobtype == 2:
                     print('Warning')
 

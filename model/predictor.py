@@ -59,7 +59,7 @@ class predict:
         for f, y in zip(feature, label):
             label = self.r_l_map[y]
 
-            if label.startswith('B-'):
+            if label.startswith('B'):
 
                 if current is not None:
                     chunks += "</"+current+"> "
@@ -74,7 +74,7 @@ class predict:
                 chunks += "<"+current+"> " + f + " </"+current+"> "
                 current = None
 
-            elif label.startswith('I-'):
+            elif label.startswith('I'):
 
                 if current is not None:
                     base = label[2:]

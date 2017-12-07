@@ -95,8 +95,9 @@ class eval_batch:
         recall = self.overlap_count / float(self.gold_count)
         if precision == 0.0 or recall == 0.0:
             return 0.0, 0.0, 0.0, 0.0
-        f = 2 * (precision * recall) / (precision + recall)
+        # f = 2 * (precision * recall) / (precision + recall)
         accuracy = float(self.correct_labels) / self.total_labels
+        f = 2 * (accuracy * recall) / (accuracy + recall)
         return f, precision, recall, accuracy
 
     def acc_score(self):
