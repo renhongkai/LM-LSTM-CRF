@@ -30,7 +30,8 @@ def to_scalar(var):
 
 
 def argmax(vec):
-    """helper function to calculate argmax of input vector at dimension 1
+    """
+        helper function to calculate argmax of input vector at dimension 1
     """
     _, idx = torch.max(vec, 1)
     return to_scalar(idx)
@@ -224,7 +225,7 @@ def read_corpus(lines):
     tmp_fl = list()
     tmp_ll = list()
     for line in lines:
-        if not (line.isspace() or (len(line) > 10 and line[0:10] == '-DOCSTART-')):
+        if not (line.isspace()):
             line = line.rstrip('\n').split()
             tmp_fl.append(line[0])
             tmp_ll.append(line[-1])
@@ -236,7 +237,7 @@ def read_corpus(lines):
     if len(tmp_fl) > 0:
         features.append(tmp_fl)
         labels.append(tmp_ll)
-
+    print("==========",len(features))
     return features, labels
 
 def read_features(lines, multi_docs = True):

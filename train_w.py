@@ -70,7 +70,19 @@ if __name__ == "__main__":
 
     # converting format
     dev_features, dev_labels = utils.read_corpus(dev_lines)
+    print("验证集句子数",len(dev_features))
+    print("验证集标签数",len(dev_labels))
+    dev_words_num = 0
+    for i in dev_labels:
+        dev_words_num += i.count('B')
+    print("验证集词数",dev_words_num)
     test_features, test_labels = utils.read_corpus(test_lines)
+    print("测试集句子数",len(test_features))
+    print("测试集标签数",len(test_labels))
+    test_words_num = 0
+    for i in test_labels:
+        test_words_num += i.count('B')
+    print("测试集词数",test_words_num)
 
     if args.load_check_point:
         if os.path.isfile(args.load_check_point):
@@ -88,7 +100,12 @@ if __name__ == "__main__":
         # converting format
 
         train_features, train_labels, f_map, l_map = utils.generate_corpus(lines, if_shrink_feature=True, thresholds=0)
-        
+        print("训练集句子数",len(train_features))
+        print("训练集标签数",len(train_labels))
+        train_words_num = 0
+        for i in train_labels:
+            train_words_num += i.count('B')
+        print("训练集词数",train_words_num)
         f_set = {v for v in f_map}
         f_map = utils.shrink_features(f_map, train_features, args.mini_count)
 
@@ -207,28 +224,17 @@ if __name__ == "__main__":
                 test_f1, test_pre, test_rec, test_acc = evaluator.calc_score(ner_model, test_dataset_loader)
 
                 track_list.append(
-                    {'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_acc': dev_acc, 'test_f1': test_f1,
-                     'test_acc': test_acc})
+                    {'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_pre': dev_pre, 'test_f1': test_f1,
+                     'test_pre': test_pre})
 
                 print(
-                    '(loss: %.4f, epoch: %d, dev F1 = %.4f, dev acc = %.4f, F1 on test = %.4f, acc on test= %.4f), saving...' %
+                    '(loss: %.4f, epoch: %d, dev F1 = %.4f, dev pre = %.4f, F1 on test = %.4f, pre on test= %.4f), saving...' %
                     (epoch_loss,
                      args.start_epoch,
                      dev_f1,
                      dev_acc,
                      test_f1,
                      test_acc))
-                f  = open('result.txt','a+')
-                f.write('(loss: %.4f, epoch: %d, dev F1 = %.4f,dev rec = %.4F dev acc = %.4f, F1 on test = %.4f,rec on test= %.4f acc on test= %.4f), saving...\n' %
-                    (epoch_loss,
-                     args.start_epoch,
-                     dev_f1,
-                     dev_rec,
-                     dev_acc,
-                     test_f1,
-                     test_rec,
-                     test_acc))
-                f.close()
                 try:
                     utils.save_checkpoint({
                         'epoch': args.start_epoch,
@@ -244,12 +250,12 @@ if __name__ == "__main__":
 
             else:
                 patience_count += 1
-                print('(loss: %.4f, epoch: %d, dev F1 = %.4f, dev acc = %.4f)' %
+                print('(loss: %.4f, epoch: %d, dev F1 = %.4f, dev pre = %.4f)' %
                       (epoch_loss,
                        args.start_epoch,
                        dev_f1,
-                       dev_acc))
-                track_list.append({'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_acc': dev_acc})
+                       dev_pre))
+                track_list.append({'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_pre': dev_pre})
 
         else:
 
