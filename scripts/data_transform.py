@@ -42,14 +42,24 @@ def generate_test_data(test_data_filename):
         test_data.append(test_data_item)  # 追加最后一个句子
     f.close()
     return test_data
+def calc_time(file_name):
+    f = open(file_name,'r')
+    lines = [line.rstrip() for line in f.readlines()]
+    sum_time = 0
+    epoch = 0
+    for line in lines:
+        if "take:" in line:
+            epoch += 1
+            sum_time += float(line[line.find('take:') + 6:-1])
+    print(epoch)
+    print("每轮平均时间",sum_time/epoch)
+    f.close()
 
-"""
-    统计句子数，词数
-"""
 
 if __name__ == "__main__":
     print("utils main")
-    word_BI("./data/CTB5/train.ctb50.seg", "./data/CTB5/train.ctb50.BI.seg")
-    word_BI("./data/CTB5/dev.ctb50.seg", "./data/CTB5/dev.ctb50.BI.seg")
-    word_BI("./data/CTB5/test.ctb50.seg", "./data/CTB5/test.ctb50.BI.seg")
+    # word_BI("../data/CTB5/train.ctb50.seg", "../data/CTB5/train.ctb50.BI.seg")
+    # word_BI("../data/CTB5/dev.ctb50.seg", "../data/CTB5/dev.ctb50.BI.seg")
+    # word_BI("../data/CTB5/test.ctb50.seg", "../data/CTB5/test.ctb50.BI.seg")
     # generate_test_data("./data/CTB5/dev.ctb50.BI.seg")
+    calc_time('../logs/ctb.log')

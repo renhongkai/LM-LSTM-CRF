@@ -223,17 +223,19 @@ if __name__ == "__main__":
 
                 test_f1, test_pre, test_rec, test_acc = evaluator.calc_score(ner_model, test_dataset_loader)
 
-                track_list.append(
-                    {'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_pre': dev_pre, 'test_f1': test_f1,
-                     'test_pre': test_pre})
+                # track_list.append(
+                #     {'loss': epoch_loss, 'dev_f1': dev_f1, 'dev_pre': dev_pre, 'test_f1': test_f1,
+                #      'test_pre': test_pre})
 
                 print(
-                    '(loss: %.4f, epoch: %d, dev F1 = %.4f, dev pre = %.4f, F1 on test = %.4f, pre on test= %.4f), saving...' %
+                    '(loss: %.4f, epoch: %d, dev F1 = %.4f,dev rec = %.4f dev pre = %.4f, F1 on test = %.4f,rec on test= %.4f pre on test= %.4f), saving...' %
                     (epoch_loss,
                      args.start_epoch,
                      dev_f1,
+                     dev_rec,
                      dev_acc,
                      test_f1,
+                     test_rec,
                      test_acc))
                 try:
                     utils.save_checkpoint({
